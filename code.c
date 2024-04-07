@@ -541,6 +541,20 @@ void draw_players(Player* players, char player, char erase){
 			}
         }
     }
+	for (int i =0; i<numPlayers; i++){
+		char place = players[i].place;
+		if (place == 0){continue;}
+		for (short x = 0; x<playerSize; x++){
+			for (short y = 0; y<playerSize; y++){
+				if (icons[y+players[i].starty][x+players[i].startx] > 20000){
+					;
+				}
+				else {
+					plot_pixel(x+290,y+100-20*place, players[i].color);
+				}
+			}
+		}
+	}
 }	
 
 short decimalToSevenSegment(int n) {
