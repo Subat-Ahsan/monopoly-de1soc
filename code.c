@@ -339,6 +339,8 @@ int main(void)
 	writeNumToSevenSegment(4);
     Player players[4];
 	char currentPlayer = 0;
+	char numGone = 0;
+	numPlayers = 4;
 	Square squares[32];
 	
 	// declare other variables(not shown)
@@ -375,7 +377,6 @@ int main(void)
 		players[i].place = 0;
 	}
 	
-	char numGone = 0;
 	
 	//pixelbufferstuff
     /* set front pixel buffer to Buffer 1 */
@@ -424,19 +425,14 @@ int main(void)
 		players[currentPlayer].posy = squares[players[currentPlayer].currentSquare].drawy;
 		
 		players[currentPlayer].cash = players[currentPlayer].cash + calculateSquareCost(players[currentPlayer],
-		squares[players[currentPlayer].currentSquare]));
-		if (players[currentPlayer].cash < 0){
-			numGone += 1;
-			players[currentPlayer].place = numGone;
-		}
-		
+		squares[players[currentPlayer].currentSquare]);
 		
 		stage = 2;
-		
 		}
 		else if(stage == 2){
-			*(push_ptr+3) = 0b1111;
 			
+			
+			*(push_ptr+3) = 0b1111;
 			while (1){
 				int keys_pressed = *(push_ptr+3);
 				if (keys_pressed & 0b0100){
@@ -445,6 +441,10 @@ int main(void)
 			}
 			*(push_ptr+3) = 0b1111;
 			
+			if (players[currentPlayer].cash < 0){
+				numGone += 1;
+				players[currentPlayer].place = numGone;
+			}
 			currentPlayer = (currentPlayer + 1)%numPlayers;
 			while (players[currentPlayer].place != 0){
 				currentPlayer = (currentPlayer + 1)%numPlayers;
